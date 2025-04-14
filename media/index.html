@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake in VSCode</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #282a36;
+        color: #f8f8f2;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Courier New', monospace;
+        overflow: hidden;
+      }
+
+      #start-screen,
+      #game-over-screen {
+        position: absolute;
+        background: rgba(40, 42, 54, 0.95);
+        color: #f8f8f2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.4s ease;
+      }
+
+      #start-screen.hidden,
+      #game-over-screen.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        margin-top: 20px;
+        background: #50fa7b;
+        border: none;
+        border-radius: 12px;
+        color: #282a36;
+        font-weight: bold;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 0 10px #50fa7b;
+      }
+
+      .btn:hover {
+        background: #8affb5;
+        box-shadow: 0 0 20px #8affb5;
+      }
+
+      canvas {
+        background: #44475a;
+        border-radius: 12px;
+        box-shadow: 0 0 15px #6272a4;
+        border: 2px solid #50fa7b;
+      }
+
+      .scoreboard {
+        margin-top: 16px;
+        font-size: 1rem;
+        background: #44475a;
+        padding: 8px 16px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        color: #f8f8f2;
+        display: flex;
+        gap: 20px;
+        border: 1px solid #6272a4;
+      }
+
+      .scoreboard span {
+        color: #f1fa8c;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="start-screen">
+      <h1>🐍 Snake in VSCode</h1>
+      <button class="btn" onclick="startGame()">Jogar</button>
+    </div>
+
+    <div id="game-over-screen" class="hidden">
+      <h2>💀 Game Over</h2>
+      <p>Pressione <strong>R</strong> ou clique abaixo para reiniciar</p>
+      <button class="btn" onclick="resetGame()">Reiniciar</button>
+    </div>
+
+    <canvas id="game" width="400" height="400"></canvas>
+
+    <div class="scoreboard">
+      <div>🎯 Score: <span id="score">0</span></div>
+      <div>🏆 Recorde: <span id="record">0</span></div>
+    </div>
+
+    <script src="{{SCRIPT}}"></script>
+  </body>
+</html>
