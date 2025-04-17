@@ -1,9 +1,11 @@
 {
   "name": "snake-in-vscode",
   "displayName": "Snake in VSCode",
-  "description": "Jogue o clássico jogo da cobrinha dentro do VSCode",
-  "version": "0.0.1",
+  "description": "Play the classic snake game inside VSCode.",
+  "version": "1.0.0",
+  "publisher": "MChiodi",
   "icon": "icon.png",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.99.0"
   },
@@ -18,7 +20,7 @@
     "commands": [
       {
         "command": "snake.play",
-        "title": "Jogar Cobrinha 🐍"
+        "title": "Play Snake 🐍"
       }
     ]
   },
@@ -30,6 +32,14 @@
     "lint": "eslint src",
     "test": "vscode-test"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MatheusChiodi/snake-in-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/MatheusChiodi/snake-in-vscode/issues"
+  },
+  "homepage": "https://github.com/MatheusChiodi/snake-in-vscode",
   "devDependencies": {
     "@types/vscode": "^1.99.0",
     "@types/mocha": "^10.0.10",

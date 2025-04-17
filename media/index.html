@@ -94,20 +94,20 @@
   <body>
     <div id="start-screen">
       <h1>🐍 Snake in VSCode</h1>
-      <button class="btn" onclick="startGame()">Jogar</button>
+      <button class="btn" onclick="startGame()">To play</button>
     </div>
 
     <div id="game-over-screen" class="hidden">
       <h2>💀 Game Over</h2>
-      <p>Pressione <strong>R</strong> ou clique abaixo para reiniciar</p>
-      <button class="btn" onclick="resetGame()">Reiniciar</button>
+      <p>Press <strong>R</strong> or click below to restart</p>
+      <button class="btn" onclick="resetGame()">Restart</button>
     </div>
 
     <canvas id="game" width="400" height="400"></canvas>
 
     <div class="scoreboard">
       <div>🎯 Score: <span id="score">0</span></div>
-      <div>🏆 Recorde: <span id="record">0</span></div>
+      <div>🏆 Record: <span id="record">0</span></div>
     </div>
 
     <script src="{{SCRIPT}}"></script>

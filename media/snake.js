@@ -18,14 +18,28 @@ let gameSpeed = 150;
 let updateInterval;
 let angle = 0;
 let lastMilestone = 0;
+let growAmount = 0;
 
 const boxSize = 20;
 const canvasSize = 400;
 
-const barriers = Array.from({ length: 6 }, () => ({
-  x: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
-  y: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
-}));
+let barriers = [];
+
+function isOccupied(x, y) {
+  return (
+    snake.some((s) => s.x === x && s.y === y) ||
+    barriers.some((b) => b.x === x && b.y === y)
+  );
+}
+
+function generateFreePosition() {
+  let x, y;
+  do {
+    x = Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize;
+    y = Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize;
+  } while (isOccupied(x, y));
+  return { x, y };
+}
 
 function updateScoreDisplay() {
   document.getElementById('score').textContent = score;
@@ -45,11 +59,28 @@ function drawBoard() {
 }
 
 function drawSnake() {
-  ctx.fillStyle = '#50fa7b';
-  for (let s of snake) {
+  for (let i = 0; i < snake.length; i++) {
+    const s = snake[i];
+    const gradient = ctx.createLinearGradient(
+      s.x,
+      s.y,
+      s.x + boxSize,
+      s.y + boxSize
+    );
+
+    if (i === 0) {
+      gradient.addColorStop(0, '#8be9fd');
+      gradient.addColorStop(1, '#50fa7b');
+      ctx.shadowColor = '#8be9fd';
+    } else {
+      gradient.addColorStop(0, '#50fa7b');
+      gradient.addColorStop(1, '#3ad29f');
+      ctx.shadowColor = '#50fa7b';
+    }
+
+    ctx.fillStyle = gradient;
     ctx.beginPath();
     ctx.roundRect(s.x, s.y, boxSize, boxSize, 6);
-    ctx.shadowColor = '#50fa7b';
     ctx.shadowBlur = 8;
     ctx.fill();
     ctx.shadowBlur = 0;
@@ -60,14 +91,29 @@ function drawFood() {
   const centerX = food.x + boxSize / 2;
   const centerY = food.y + boxSize / 2;
 
-  ctx.fillStyle = '#FF79C6';
+  const pulse = Math.sin(angle * 2) * 2 + boxSize / 2;
+
+  // Comida base
+  const gradient = ctx.createRadialGradient(
+    centerX,
+    centerY,
+    4,
+    centerX,
+    centerY,
+    pulse
+  );
+  gradient.addColorStop(0, '#ffb6e6');
+  gradient.addColorStop(1, '#FF79C6');
+
+  ctx.fillStyle = gradient;
   ctx.beginPath();
-  ctx.arc(centerX, centerY, boxSize / 2, 0, Math.PI * 2);
+  ctx.arc(centerX, centerY, pulse, 0, Math.PI * 2);
   ctx.shadowColor = '#FF79C6';
-  ctx.shadowBlur = 12;
+  ctx.shadowBlur = 15;
   ctx.fill();
   ctx.shadowBlur = 0;
 
+  // Partículas
   for (let i = 0; i < 6; i++) {
     const rad = angle + (i * Math.PI) / 3;
     const x = centerX + Math.cos(rad) * 12;
@@ -81,16 +127,22 @@ function drawFood() {
   angle += 0.05;
 
   if (goldenFood) {
-    ctx.fillStyle = '#f1fa8c';
+    const gx = goldenFood.x + boxSize / 2;
+    const gy = goldenFood.y + boxSize / 2;
+
+    const gPulse = Math.sin(angle * 3) * 2 + boxSize / 2;
+
+    const goldenGradient = ctx.createRadialGradient(gx, gy, 4, gx, gy, gPulse);
+    goldenGradient.addColorStop(0, '#fff68f');
+    goldenGradient.addColorStop(1, '#f1fa8c');
+
+    ctx.fillStyle = goldenGradient;
     ctx.beginPath();
-    ctx.arc(
-      goldenFood.x + boxSize / 2,
-      goldenFood.y + boxSize / 2,
-      boxSize / 2,
-      0,
-      Math.PI * 2
-    );
+    ctx.arc(gx, gy, gPulse, 0, Math.PI * 2);
+    ctx.shadowColor = '#f1fa8c';
+    ctx.shadowBlur = 20;
     ctx.fill();
+    ctx.shadowBlur = 0;
   }
 }
 
@@ -145,6 +197,7 @@ function update() {
 
   const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
 
+  // Colisão com parede
   if (
     head.x < 0 ||
     head.x >= canvasSize ||
@@ -155,6 +208,7 @@ function update() {
     return;
   }
 
+  // Colisão com si mesmo
   for (const segment of snake) {
     if (head.x === segment.x && head.y === segment.y) {
       gameOver = true;
@@ -162,6 +216,7 @@ function update() {
     }
   }
 
+  // Colisão com obstáculos
   for (const b of barriers) {
     if (head.x === b.x && head.y === b.y) {
       gameOver = true;
@@ -169,10 +224,12 @@ function update() {
     }
   }
 
-  snake.unshift(head);
+  snake.unshift(head); // adiciona nova cabeça
 
+  // Comer comida normal
   if (head.x === food.x && head.y === food.y) {
     score++;
+    growAmount += 0; 
     if (score % 5 === 0 && gameSpeed > 60) {
       gameSpeed -= 10;
       startGameLoop();
@@ -181,16 +238,16 @@ function update() {
       highScore = score;
       localStorage.setItem('snakeHighScore', highScore);
     }
-    food = {
-      x: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
-      y: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
-    };
+    food = generateFreePosition();
     if (Math.random() < 0.2) {
       spawnGoldenFood();
     }
     checkAchievements();
+
+    // Comer golden food
   } else if (goldenFood && head.x === goldenFood.x && head.y === goldenFood.y) {
     score += 3;
+    growAmount += 2;
     goldenFood = null;
     clearTimeout(goldenFoodTimeout);
     if (score > highScore) {
@@ -199,7 +256,12 @@ function update() {
     }
     checkAchievements();
   } else {
-    snake.pop();
+    // Se não comeu nada, remover cauda
+    if (growAmount > 0) {
+      growAmount--;
+    } else {
+      snake.pop();
+    }
   }
 
   drawBoard();
@@ -230,7 +292,23 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+function startGame() {
+  spawnGoldenFood();
+
+  startScreen.classList.add('hidden');
+  gameStarted = true;
+  score = 0;
+  gameOver = false;
+  snake = [{ x: 200, y: 200 }];
+  direction = { x: boxSize, y: 0 };
+  food = generateFreePosition();
+  barriers = Array.from({ length: 6 }, () => generateFreePosition());
+  startGameLoop();
+}
+
 function resetGame() {
+  spawnGoldenFood();
+
   snake = [{ x: 200, y: 200 }];
   direction = { x: boxSize, y: 0 };
   score = 0;
@@ -238,24 +316,19 @@ function resetGame() {
   goldenFood = null;
   gameSpeed = 150;
   lastMilestone = 0;
+  food = generateFreePosition();
+  barriers = Array.from({ length: 6 }, () => generateFreePosition());
   gameOverScreen.classList.add('hidden');
   startGameLoop();
 }
 
-function startGame() {
-  startScreen.classList.add('hidden');
-  gameStarted = true;
-  startGameLoop();
-}
-
 function spawnGoldenFood() {
-  goldenFood = {
-    x: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
-    y: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
-  };
+  goldenFood = generateFreePosition();
+
   if (goldenFoodTimeout) {
     clearTimeout(goldenFoodTimeout);
   }
+
   goldenFoodTimeout = setTimeout(() => {
     goldenFood = null;
   }, 3000);

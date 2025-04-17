@@ -1,63 +1,72 @@
-# 🐍 Snake in VSCode
+# 🐍 Snake in VSCode — Play the classic snake game inside your editor!
 
-> Uma extensão divertida para rodar o jogo da cobrinha dentro do VSCode — com visual moderno, efeitos, conquistas e mecânicas únicas!
+> Escape the bugs (literally) and take a fun break with this modern snake game, built directly into VSCode.  
+> Fully animated, Dracula-themed, and packed with special mechanics and achievements.
 
 ---
 
-## 📦 Instalação via VSIX
+## ✨ Key Features
 
-Você pode instalar esta extensão manualmente através do arquivo `.vsix`.
+- 🎮 **Play Snake directly in VSCode**
+- 🧠 **Increases difficulty** every 5 points
+- ⭐ **Animated achievement system**
+- 💎 **Golden food** appears randomly (+3 points)
+- 🚧 **Random barriers** as obstacles
+- 💀 **Game Over screen** with restart option
+- 🎨 **Dracula-inspired visuals** and glowing effects
 
-### 1. Faça o download do arquivo
+---
 
-Baixe o pacote `.vsix` já empacotado:
+## ▶️ How to Play
 
-### 2. Instale no seu VSCode
+Open the Command Palette (`Ctrl+Shift+P`) and search:
 
-#### ✅ Opção 1 — via terminal:
+```
+Play Snake 🐍
+```
+
+The game opens in a WebView panel.
+
+---
+
+## 📦 Installation
+
+### Coming soon on the Marketplace
+
+> You’ll be able to search for `Snake in VSCode` in the Extensions tab.
+
+### Manual installation via `.vsix`
+
+1. Download the `.vsix` file
+2. Run the command:
 
 ```bash
-code --install-extension snake-in-vscode-0.0.1.vsix
+code --install-extension snake-in-vscode-1.0.0.vsix
 ```
 
-#### ✅ Opção 2 — via interface gráfica:
-
-1. Abra o **VSCode**
-2. Vá até a aba de **Extensões (Ctrl + Shift + X)**
-3. Clique nos `...` no canto superior direito
-4. Selecione **"Instalar a partir de VSIX..."**
-5. Escolha o arquivo `snake-in-vscode-0.0.1.vsix`
+Or install via the UI:
+- Open VSCode
+- Go to Extensions tab (Ctrl+Shift+X)
+- Click `...` > `Install from VSIX...`
+- Select the downloaded `.vsix` file
 
 ---
 
-## ▶️ Como jogar
+## 🎥 Developed LIVE on the MChiodi channel
 
-Após instalar, abra o Command Palette (`Ctrl+Shift+P`) e digite:
-
-```
-Jogar Cobrinha 🐍
-```
-
----
-
-## 🎮 Recursos incluídos
-
-- Visual moderno com tema Dracula
-- Aumento de dificuldade a cada 5 pontos
-- Comida dourada temporária (+3 pontos)
-- Barreiras fixas aleatórias
-- Modo Game Over com botão reiniciar
-- Sistema de conquistas animadas
-
----
-
-## 🎥 Desenvolvido AO VIVO no canal MChiodi
-
-📺 Assista a live completa:  
+📺 Watch the full live:
 https://www.youtube.com/live/2BODCZVxrBg?si=6obBqR6lA5ThxZR6
 
 ---
 
-## 🧑‍💻 Autor
+## 🧑‍💻 Author
 
-Criado por [Matheus Chiodi](https://www.youtube.com/@MChiodiDev) — MChiodi
+Made with love, pixels, and a bit of madness by  
+[Matheus Chiodi](https://www.youtube.com/@MChiodiDev) • [GitHub](https://github.com/MatheusChiodi)
+
+---
+
+## ☕ Contribute
+
+If this game made you smile, consider starring the repo ⭐  
+Found a bug or want to suggest a new feature? [Open an issue](https://github.com/MatheusChiodi/Snake-in-VSCode-LiveCoding/issues) on GitHub.
